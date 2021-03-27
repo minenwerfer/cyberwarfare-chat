@@ -1,0 +1,29 @@
+<div>
+    <span>Sala: <b>{{ room }}</b></span>
+    <span>Usuário: <b>{{ username }}:{{ hash }}</b></span>
+    <span><a href="/?m=logout">Sair</a></span>
+</div>
+<hr />
+<form method="POST" action="/?m=send">
+    <label>
+        <div>Mensagem</div>
+        <input
+            type="text"
+            name="message"
+
+            placeholder="Sua mensagem"
+        />
+    </label>
+    <input
+        type="submit"
+        value="Disparar!"
+    />
+</form>
+<hr />
+<div>
+    {{ messages }}
+</div>
+<hr/>
+<div>
+    Protegido com AES-128-CTR.
+</div>
