@@ -16,10 +16,6 @@ class Session {
         return self::$instance;
     }
 
-    public function authFields() {
-        return $this->auth_fields;
-    }
-
     public function cookiesSet() {
         $result = array_filter($this->auth_fields, function($field) {
             return !isset($_COOKIE[$field]) || empty($_COOKIE[$field]);
@@ -43,5 +39,12 @@ class Session {
             $_COOKIE['username'],
             $_COOKIE['password']
         ];
+    }
+
+    public function destroy() {
+        foreach( $this->auth_fields as $field ) {
+            unset($_COOKIE[$field]);
+            setcookie($field, '', time() - 3600);
+        }
     }
 }

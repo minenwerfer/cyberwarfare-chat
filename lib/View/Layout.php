@@ -28,6 +28,6 @@ class Layout extends \Template {
     }
 
     public function render() {
-        echo $this->layout->render();
+        $this->layout->render();
     }
 }

@@ -19,7 +19,7 @@ class Key extends Controller {
                     setcookie($field, $_POST[$field]);
                 }
 
-                header('Location: /');
+                $this->redirect('/');
 
             } else {
                 $this->view->set('error', 'Erro!!', True);

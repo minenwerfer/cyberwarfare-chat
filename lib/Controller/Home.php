@@ -7,28 +7,52 @@ class Home extends Controller {
     protected $user;
 
     public function __construct() {
-        [
+        //
+    }
+
+    protected function initChat() {
+        if( !\Session::getInstance()->cookiesSet() ) {
+            $this->redirect('/?c=Key');
+            return False;
+        }
+
+        if( $this->session ) {
+            return True;
+        }
+
+        list(
             $room,
             $key,
             $username,
             $password
 
-        ] = \Session::getInstance()->get();
+        ) = \Session::getInstance()->get();
 
-        $this->session = new \Chat\Session($key, "/tmp/$room");
+        try {
+            $this->session = new \Chat\Session($key, $room);
 
-        $this->user = new \Chat\User($this->session);
-        $this->user->auth($username, $password);
+            $this->user = new \Chat\User($this->session);
+            $this->user->auth($username, $password);
+
+        } catch( \Exception $error ) {
+            if( $error->getCode() !== 2 ) {
+                $this->logout();
+                exit;
+            }
+
+        }
 
         $this->view = new \View\Home;
         $this->view->set('room', $room);
         $this->view->set('username', $username);
         $this->view->set('hash', $this->user->hash);
+
+        return True;
     }
 
     public function index() {
-        if( !\Session::getInstance()->cookiesSet() ) {
-            header('Location: /?c=Key');
+        if( !$this->initChat() ) {
+            return;
         }
 
         try {
@@ -36,15 +60,17 @@ class Home extends Controller {
 
             $this->session->rewind();
             foreach( $this->session->readLast() as $chunk ) {
-                [
-                    $name,
-                    $hash,
-                    $content,
-                    $date
 
-                ] = $chunk;
+                if( sizeof($chunk) !== sizeof($this->session->fields) ) {
+                    continue;
+                }
 
-                $messages .= "$name:$hash em $date - $content<br/>";
+                $message = new \Template('home/message');
+                foreach( $this->session->fields as $idx => $field ) {
+                    $message->set($field, $chunk[$idx]);
+                }
+
+                $messages .= $message->output();
             }
 
             $this->view->set('messages', $messages);
@@ -58,13 +84,17 @@ class Home extends Controller {
     }
 
     public function send() {
+        if( !$this->initChat() ) {
+            return;
+        }
+
         if( isset($_POST['message']) && !empty($_POST['message']) ) {
             try {
                 $this->user->sendMessage($_POST['message']);
 
             } catch( \Exception $error ) {
                 $this->view->set('error', $error->getMessage(), True);
-                
+
             }
         }
 
@@ -72,10 +102,7 @@ class Home extends Controller {
     }
 
     public function logout() {
-        foreach( \Session::getInstance()->auth_fields as $field ) {
-            unset($_COOKIE[$field]);
-        }
-
-        header('Location: /?c=Key');
+        \Session::getInstance()->destroy();
+        $this->redirect('/?c=Key');
     }
 }

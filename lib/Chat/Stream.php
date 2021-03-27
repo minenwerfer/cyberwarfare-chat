@@ -9,6 +9,12 @@ class Stream {
     protected $limit = 28;
     
     public function __construct($key, $fileName) {
+        if( !file_exists(STORE_PATH) ) {
+            if( !mkdir(STORE_PATH) ) {
+                throw new \Exception('unwritable store path', 0);
+            }
+        }
+
         if( $fileName ) {
             $this->setFilename($fileName);
             $this->open();
@@ -24,7 +30,8 @@ class Stream {
     }
 
     public function setFilename($fileName) {
-        $this->fileName = $fileName;
+        $encrypted = \crypt($fileName, CRYPTO_SALT);
+        $this->fileName = STORE_PATH . "/$encrypted";
     }
 
     public function getFilename() {
@@ -33,6 +40,9 @@ class Stream {
 
     public function open() {
         $this->fileHandler = fopen($this->fileName, 'a+');
+        if( !$this->fileHandler ) {
+            throw new \Exception('couldnt open chat', 1);
+        }
     }
 
     public function checkMessage($data) {
@@ -66,7 +76,7 @@ class Stream {
             
             if( !$this->checkMessage($data) ) {
                 if( $counter === 0 ) {
-                    throw new \Exception('invalid key');
+                    throw new \Exception('invalid key', 2);
                 } else {
                     continue;
                 }
@@ -91,7 +101,7 @@ class Stream {
 
             if( !$this->checkMessage($data) ) {
                 if( $counter === 0 ) {
-                    throw new \Exception('invalid key');
+                    throw new \Exception('invalid key', 2);
                 } else {
                     continue;
                 }

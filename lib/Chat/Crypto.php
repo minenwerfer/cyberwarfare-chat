@@ -3,16 +3,15 @@
 namespace Chat;
 
 class Crypto {
-    protected $ciphering;
+    public static $ciphering = 'AES-128-CTR';
     protected $iv;
     protected $ivLength;
     protected $key;
     protected $options;
 
     public function __construct($key) {
-        $this->ciphering = 'AES-128-CTR';
         $this->iv = CRYPTO_IV;
-        $this->ivLength = openssl_cipher_iv_length($this->ciphering);
+        $this->ivLength = openssl_cipher_iv_length(self::$ciphering);
         $this->key = $key;
         $this->options = 0;
     }
@@ -20,7 +19,7 @@ class Crypto {
     public function encrypt($data) {
         return openssl_encrypt(
             $data,
-            $this->ciphering,
+            self::$ciphering,
             $this->key,
             $this->options,
             $this->iv
@@ -30,7 +29,7 @@ class Crypto {
     public function decrypt($data) {
         return openssl_decrypt(
             $data,
-            $this->ciphering,
+            self::$ciphering,
             $this->key,
             $this->options,
             $this->iv

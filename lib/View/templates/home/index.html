@@ -1,10 +1,12 @@
+<meta http-equiv="refresh" content="30" />
 <div>
     <span>Sala: <b>{{ room }}</b></span>
     <span>Usuário: <b>{{ username }}:{{ hash }}</b></span>
-    <span><a href="/?m=logout">Sair</a></span>
+    <span><a href="">Atualizar</a></span>
+    <span><a href="{{ logout_uri }}">Sair</a></span>
 </div>
 <hr />
-<form method="POST" action="/?m=send">
+<form method="POST" action="{{ send_uri }}">
     <label>
         <div>Mensagem</div>
         <input
@@ -20,10 +22,11 @@
     />
 </form>
 <hr />
-<div>
+<table width="100%" cellpadding="4" bgcolor="#444">
     {{ messages }}
-</div>
+</table>
 <hr/>
 <div>
-    Protegido com AES-128-CTR.
+    Protegido com {{ ciphering }}.<br/>
+    <a href="https://github.com/ringeringeraja/cyberwarfare-chat">https://github.com/ringeringeraja/cyberwarfare-chat</a>
 </div>

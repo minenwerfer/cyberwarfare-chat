@@ -30,4 +30,18 @@ class Template {
     public function render() {
         echo $this->output();
     }
+
+    protected function makeURI($uri) {
+        return str_replace('//', '/', BASE_URI . $uri);
+    }
+
+    public static function contrastColor($hexcolor) {
+        $r = hexdec(substr($hexcolor, 0, 2));
+        $g = hexdec(substr($hexcolor, 2, 2));
+        $b = hexdec(substr($hexcolor, 4, 2));
+
+        $yiq = (($r * 299) + ($g * 587) + ($b * 144)) / 1000;
+
+        return ($yiq >= 128) ? '#000000' : '#dddddd';
+    }
 }
