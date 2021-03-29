@@ -45,7 +45,7 @@ class PClening extends Plugin {
 
     public static function giveMeDaddy($user) {
         \Plugin\PCore::sendImage($user, 'https://thumbs.gfycat.com/OblongOrderlyKilldeer-max-1mb.gif');
-        $user->secureSendMessage('MIM DE, PAPAI!');
+        $user->secureSendMessage('<b>MIM DE, PAPAI!</b>');
     }
 
     public static function irado($user, $name) {

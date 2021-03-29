@@ -21,11 +21,11 @@ class Session {
         $this->banned_stream = fopen($banned_fname, 'a+');
 
         $this->privileged_list = $privileged_sz > 0
-            ? explode('\n', fread($this->privileged_stream, filesize($privileged_fname)))
+            ? explode("\n", fread($this->privileged_stream, $privileged_sz))
             : [];
             
         $this->banned_list = $banned_sz > 0
-            ?explode('\n', fread($this->banned_stream, filesize($banned_fname)))
+            ?explode("\n", fread($this->banned_stream, $banned_sz))
             : [];
     }
 
