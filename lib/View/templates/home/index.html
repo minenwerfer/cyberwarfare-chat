@@ -1,8 +1,10 @@
 <meta http-equiv="refresh" content="30" />
+<h3>{{ notice }}</h3>
 <div>
     <span>Sala: <b>{{ room }}</b></span>
     <span>Usuário: <b>{{ username }}:{{ hash }}</b></span>
-    <span><a href="">Atualizar</a></span>
+    <span>Nível: <b>{{ level }}</b></span>
+    <span><a href="{{ update_uri }}">Atualizar</a></span>
     <span><a href="{{ logout_uri }}">Sair</a></span>
 </div>
 <hr />
@@ -29,4 +31,7 @@
 <div>
     Protegido com {{ ciphering }}.<br/>
     <a href="https://github.com/ringeringeraja/cyberwarfare-chat">https://github.com/ringeringeraja/cyberwarfare-chat</a>
+</div>
+<div>
+    {{ user_script }}
 </div>

@@ -17,11 +17,16 @@ class Layout extends \Template {
         $this->layout->set('body', $this->output()); 
     }
 
-    public function set($key, $value, $parent = False) {
-        $this->values[$key] = $value;
+    public function set($mixed, $value = NULL, $parent = False) {
+        
+        if( is_array($mixed) ) {
+            $this->setMultiple($mixed);
+        } else {
+            $this->values[$mixed] = $value;
+        }
 
         if( $parent ) {
-            $this->layout->set($key, $value);
+            $this->layout->set($mixed, $value);
         }
 
         $this->layout->set('body', $this->output());

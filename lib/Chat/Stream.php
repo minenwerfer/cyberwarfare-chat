@@ -6,7 +6,7 @@ class Stream {
     protected $fileName;
     protected $fileHandler;
     protected $crypto;
-    protected $limit = 28;
+    protected $limit = 150;
     
     public function __construct($key, $fileName) {
         if( !file_exists(STORE_PATH) ) {
@@ -31,6 +31,7 @@ class Stream {
 
     public function setFilename($fileName) {
         $encrypted = \crypt($fileName, CRYPTO_SALT);
+        $encrypted = str_replace('/', '_', $encrypted);
         $this->fileName = STORE_PATH . "/$encrypted";
     }
 
@@ -43,6 +44,10 @@ class Stream {
         if( !$this->fileHandler ) {
             throw new \Exception('couldnt open chat', 1);
         }
+    }
+
+    public function clear() {
+        unlink($this->fileName);
     }
 
     public function checkMessage($data) {
@@ -71,7 +76,13 @@ class Stream {
 
     public function readChunk() {
         $counter = 0;
+
         while( ($line = fgets($this->fileHandler)) !== false ) {
+
+            if( empty($line) ) {
+                continue;
+            }
+
             $data = $this->crypto->decrypt($line);
             
             if( !$this->checkMessage($data) ) {
@@ -92,25 +103,26 @@ class Stream {
 
     public function readLast() {
         $file = file($this->fileName);
+
+        if( sizeof($file) === 0 ) {
+            return;
+        }
+
         $file = array_reverse($file);
+        $firstMsg = $this->crypto->decrypt(end($file));
+
+        if( !$this->checkMessage($firstMsg) ) {
+            throw new \Exception('invalid key', 2);
+        }
+
         array_splice($file, $this->limit);
 
-        $counter = 0;
         foreach( $file as $line ) {
             $data = $this->crypto->decrypt($line);
-
-            if( !$this->checkMessage($data) ) {
-                if( $counter === 0 ) {
-                    throw new \Exception('invalid key', 2);
-                } else {
-                    continue;
-                }
-            }
 
             $data = explode(',', $data);
             array_shift($data);
 
-            $counter++;
             yield $data;
         }
     }

@@ -5,7 +5,7 @@ namespace Chat;
 class Session extends Stream {
     public $fields = [
         'name',
-        'hash',
+        'iphash',
         'fgColor',
         'bgColor',
         'content',
@@ -19,7 +19,7 @@ class Session extends Stream {
     public function send($user, $content) {
         $this->write([
             $user->name,
-            $user->hash,
+            $user->iphash,
             $user->fgColor,
             $user->bgColor,
             $content,

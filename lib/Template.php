@@ -8,8 +8,18 @@ class Template {
         $this->file = __DIR__ . '/View/templates/' . $file . '.html';
     }
 
-    public function set($key, $value) {
-        $this->values[$key] = $value;
+    public function setMultiple($array) {
+        foreach( $array as $key => $value ) {
+            $this->values[$key] = $value;
+        }
+    }
+
+    public function set($mixed, $value = NULL) {
+        if( is_array($mixed) ) {
+            $this->setMultiple($mixed);
+        } else {
+            $this->values[$mixed] = $value;
+        }
     }
 
     public function output() {

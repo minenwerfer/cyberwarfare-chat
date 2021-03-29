@@ -35,6 +35,12 @@ class Home extends Controller {
             $this->user->auth($username, $password);
 
         } catch( \Exception $error ) {
+
+            if( $error->getCode() === 100 ) {
+                echo "You are banned";
+                exit;
+            }
+
             if( $error->getCode() !== 2 ) {
                 $this->logout();
                 exit;
@@ -46,6 +52,7 @@ class Home extends Controller {
         $this->view->set('room', $room);
         $this->view->set('username', $username);
         $this->view->set('hash', $this->user->hash);
+        $this->view->set('level', $this->user->isPrivileged() ? 'admin' : 'user');
 
         return True;
     }
