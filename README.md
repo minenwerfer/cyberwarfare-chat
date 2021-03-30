@@ -22,4 +22,3 @@ For now, you'll need to look at the own source code to view available methods. I
 
 ## Screenshots
 ![Peek 2021-03-30 16-24](https://user-images.githubusercontent.com/80406377/113051926-8ba4cf80-9174-11eb-9bf6-47a7b8bcab93.gif)
-![Screenshot_2021-03-30_16-20-59](https://user-images.githubusercontent.com/80406377/113051497-091c1000-9174-11eb-8f95-14ee6361eb6a.png)
