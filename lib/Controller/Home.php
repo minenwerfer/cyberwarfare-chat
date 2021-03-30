@@ -34,6 +34,8 @@ class Home extends Controller {
             $this->user = new \Chat\User($this->session);
             $this->user->auth($username, $password);
 
+            \Logger::getInstance($this->session);
+
         } catch( \Exception $error ) {
 
             if( $error->getCode() === 100 ) {

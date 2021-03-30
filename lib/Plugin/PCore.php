@@ -32,6 +32,19 @@ class PCore extends Plugin {
                 'privileged'    => true
             ],
             [
+                'command'       => '!log',
+                'function'      => "$class::log",
+                'usage'         => "<pattern?>",
+                'description'   => 'Displays log, optionally filters by pattern',
+                'privileged'    => true
+            ],
+            [
+                'command'       => '!clearlog',
+                'function'      => "$class::clearLog",
+                'description'   => 'Clears log globally',
+                'privileged'    => true
+            ],
+            [
                 'command'       => '!ban',
                 'function'      => "$class::ban",
                 'usage'         => '<iphash>',
@@ -163,6 +176,23 @@ class PCore extends Plugin {
         \Session::getInstance()->destroy();
     }
 
+    public static function log($user, $pattern = NULL) {
+        $message = '<pre>';
+
+        foreach( \Logger::getInstance()->get($pattern) as $entry ) {
+            $message .= implode(',', $entry);
+            $message .= '<br/>';
+        }
+
+        $message .= '</pre>';
+        \Command::getInstance()->sendMessage($user, $message);
+    }
+
+    public static function clearLog($user) {
+        \Logger::getInstance()->clear();
+        \Command::getInstance()->sendMessage($user, "Log cleared");
+    }
+
     public static function ban($user, $iphash) {
         \Session::getInstance()->ban($iphash);
         \Command::getInstance()->sendMessage($user, "$iphash banned");
@@ -226,6 +256,10 @@ class PCore extends Plugin {
     public static function getSessions($user) {
         $message = '<pre>';
         foreach( glob(STORE_PATH . '/*') as $file ) {
+            if( strstr($file, ".log") ) {
+                continue;
+            }
+
             $session = basename($file);
             $message .= "$session<br/>";
         }

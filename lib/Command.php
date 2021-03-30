@@ -67,7 +67,7 @@ class Command {
             '#00ff00',
             '#000000',
             str_replace(',', '&comma;', $message),
-            date('j/n/Y G:i\\h')
+            date(DATE_FORMAT)
         ]);
     }
 

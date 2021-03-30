@@ -14,8 +14,8 @@ class Session {
         $privileged_fname = SETTINGS_PATH . '/admins.txt';
         $banned_fname = SETTINGS_PATH . '/banned.txt';
         
-        $privileged_sz = filesize($privileged_fname);
-        $banned_sz = filesize($banned_fname);
+        $privileged_sz = @filesize($privileged_fname);
+        $banned_sz = @filesize($banned_fname);
 
         $this->privileged_stream = fopen($privileged_fname, 'a+');
         $this->banned_stream = fopen($banned_fname, 'a+');
@@ -25,7 +25,7 @@ class Session {
             : [];
             
         $this->banned_list = $banned_sz > 0
-            ?explode("\n", fread($this->banned_stream, $banned_sz))
+            ? explode("\n", fread($this->banned_stream, $banned_sz))
             : [];
     }
 

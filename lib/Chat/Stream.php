@@ -3,9 +3,9 @@
 namespace Chat;
 
 class Stream {
-    protected $fileName;
+    public $fileName;
+    public $crypto;
     protected $fileHandler;
-    protected $crypto;
     protected $limit = 150;
     
     public function __construct($key, $fileName) {

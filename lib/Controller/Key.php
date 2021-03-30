@@ -19,6 +19,15 @@ class Key extends Controller {
                     setcookie($field, $_POST[$field]);
                 }
 
+                extract($_POST);
+
+                $session = new \Chat\Session($key, $room);
+
+                $user = new \Chat\User($session);
+                $user->auth($username, $password);
+
+                \Logger::getInstance($session)->put($user, $room);
+
                 $this->redirect('/');
 
             } else {

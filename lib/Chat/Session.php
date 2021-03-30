@@ -23,7 +23,7 @@ class Session extends Stream {
             $user->fgColor,
             $user->bgColor,
             $content,
-            date('j/n/Y G:i\\h')
+            date(DATE_FORMAT)
         ]);
     }
 }
