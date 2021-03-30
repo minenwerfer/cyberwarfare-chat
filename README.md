@@ -11,7 +11,7 @@ A minimal chat intended to run on any server and be supported by text-mode web b
 
 ## To write your own plugin:
 
-Create a class in the namespace \Plugin that inherits Plugin, then do wathever you want in the ::install() method. Late,r, you'll need to load the plugin in the /index.php file.
+Create a class in the namespace \Plugin that inherits Plugin, then do wathever you want in the ::install() method. Later, you'll need to load the plugin in the /index.php file.
 
 Available interfaces:
 
@@ -21,6 +21,5 @@ Available interfaces:
 For now, you'll need to look at the own source code to view available methods. I'll document everything as soon as I can.
 
 ## Screenshots
-
-![Peek 2021-03-30 16-15](https://user-images.githubusercontent.com/80406377/113051469-015c6b80-9174-11eb-8b1c-c93207bdf2be.gif)
+![Peek 2021-03-30 16-24](https://user-images.githubusercontent.com/80406377/113051926-8ba4cf80-9174-11eb-9bf6-47a7b8bcab93.gif)
 ![Screenshot_2021-03-30_16-20-59](https://user-images.githubusercontent.com/80406377/113051497-091c1000-9174-11eb-8f95-14ee6361eb6a.png)
